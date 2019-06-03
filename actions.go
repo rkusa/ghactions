@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/google/go-github/v24/github"
-	"github.com/ldez/ghactions/event"
+	"github.com/rkusa/ghactions/event"
 	"golang.org/x/oauth2"
 )
 

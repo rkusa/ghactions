@@ -1,4 +1,4 @@
-module github.com/ldez/ghactions
+module github.com/rkusa/ghactions
 
 require (
 	github.com/google/go-github/v24 v24.0.0
