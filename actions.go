@@ -393,6 +393,18 @@ func (a *Action) Run() error {
 	return fmt.Errorf("no handler for the received event type %q", eventName)
 }
 
+// OnCheckRun CheckRun handler.
+func (a *Action) OnCheckRun(eventHandler func(*github.Client, *github.CheckRunEvent) error) *Action {
+	a.onCheckRun = eventHandler
+	return a
+}
+
+// OnCheckSuite CheckSuite handler.
+func (a *Action) OnCheckSuite(eventHandler func(*github.Client, *github.CheckSuiteEvent) error) *Action {
+	a.onCheckSuite = eventHandler
+	return a
+}
+
 // OnCommitComment CommitComment handler.
 func (a *Action) OnCommitComment(eventHandler func(*github.Client, *github.CommitCommentEvent) error) *Action {
 	a.onCommitComment = eventHandler
