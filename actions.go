@@ -37,6 +37,8 @@ type Action struct {
 	client                         *github.Client
 	SkipWhenNoHandler              bool
 	SkipWhenTypeUnknown            bool
+	onCheckRun                     func(*github.Client, *github.CheckRunEvent) error
+	onCheckSuite                   func(*github.Client, *github.CheckSuiteEvent) error
 	onCommitComment                func(*github.Client, *github.CommitCommentEvent) error
 	onCreate                       func(*github.Client, *github.CreateEvent) error
 	onDelete                       func(*github.Client, *github.DeleteEvent) error
@@ -78,6 +80,28 @@ func (a *Action) Run() error {
 	eventPath := os.Getenv(GithubEventPath)
 
 	switch eventName {
+	case event.CheckRun:
+		if a.onCheckRun != nil {
+			evt := &github.CheckRunEvent{}
+			err := readEvent(eventPath, evt)
+			if err != nil {
+				return err
+			}
+
+			return a.onCheckRun(a.client, evt)
+		}
+
+	case event.CheckSuite:
+		if a.onCheckSuite != nil {
+			evt := &github.CheckSuiteEvent{}
+			err := readEvent(eventPath, evt)
+			if err != nil {
+				return err
+			}
+
+			return a.onCheckSuite(a.client, evt)
+		}
+
 	case event.CommitComment:
 		if a.onCommitComment != nil {
 			evt := &github.CommitCommentEvent{}
